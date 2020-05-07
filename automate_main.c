@@ -31,64 +31,68 @@ int main(int argc, char *argv[]){
 			{
 				listeEtats[i].sorties[j] = (int)str[i][j] - 'a';
 				listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
-				//printf("%c nbC:%d\n",str[i][j],nbCharacteres );
 				nbCharacteres = nbCharacteres+1;
-
-				/* le probleme est que j avance quand on a une lettre 
-				car sans ca il ne peut lire str, 
-				mais du coup les lettres sont alors dans des cases differentes. 
-				d'où l'utilisation de nbVirgule.*/
-
 				
 			}
 			if(str[i][j] == ';'){
-				//printf(" virgule:%d val:%c\n", nbVirgule, listeTransitions[i-3][nbVirgule][nbCharacteres] );
 				nbVirgule++;
 				nbCharacteres = 0;
 			}
 			j++;//creation de la matrice de proximite
-			
+		listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
+
 	}
+	listeTransitions[i-3][nbVirgule][6] = 'c';
+
+}
 
 	//parcours de la matrice de proximite
 	int idxLigne = automate.initial;
-	int idxInput,idxElement,idxColonne = 0;
-	int transitionExistante = 0;
+	int idxInput = 0;
+	int idxElement = 0;
+	int idxColonne = 0;
+	//printf("%d\n",argv[2][2] );
 
-	while(idxLigne < 5 && transitionExistante == 0){//comment on s'arrete ?
+	while(idxLigne < 5){//comment on s'arrete ?
 		idxColonne = 0;
 
 		while(idxColonne < 5){
 			idxElement = 0;
 
 			while(listeTransitions[idxLigne][idxColonne][idxElement] != ';' || listeTransitions[idxLigne][idxColonne][idxElement] != '\0'){
-				if(argv[1][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
-					
-					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
-					
-					if (argv[1][idxInput+1] == '\0'){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
+				//printf("%c\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
+				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
+					printf("%d\n",idxInput );
+					if (argv[2][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
 						
 						//verifier que l'on est dans un etat acceptant
 						printf("Mot reconnu par l'automate\n");
 						return 0;
 					}
-					break;
 
-				}else{
+					idxInput++;
+					
+					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
+					//break;
+
+				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 'c'){ //il faut trouver le dernier charcatère de la liste
+					printf("%d mot non reconnu par l'automate 1\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
+					return 0;
+				}
+				else{
 					idxElement++;
 				}
 
 			}
-			printf("mot non reconnu par l'automate\n");
+			printf("mot non reconnu par l'automate 2\n");
 			return 0;
 		}	
 	}
-	printf("mot non reconnu par l'automate\n");
+	printf("mot non reconnu par l'automate 3\n");
 
-}
-/*
+
 printf("-------------------------------------------------\n");
-printf("%c\n", listeTransitions[1][1][0] );
+//printf("%d nb\n", listeTransitions[1][4][6] );
 
 for (int j = 0; j < 5; ++j)
 {
@@ -96,7 +100,7 @@ for (int j = 0; j < 5; ++j)
 	{
 		printf("%d %c\n",j, listeTransitions[0][j][k] );
 	}
-}*/
+}
 	
 	return 0;
 }

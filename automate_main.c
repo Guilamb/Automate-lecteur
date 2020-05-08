@@ -7,7 +7,7 @@ int transition(int depart, char symbole);//revoir le modèle des transitions car
 int listeTransitions[5][5][5];
 
 int main(int argc, char *trucmuch[]){
-	char argv[3];
+	char *argv[3];
 	argv[1]= "file.txt";
 	argv[2]= "ab";		
 	gets(argv[1]);
@@ -123,7 +123,7 @@ int *traduction(char str[160]){
 	}
 	return traduits;
 }
-*/
+
 int transition(int depart, char symbole){ //devait etre utilisé dans le while en haut, mais j'ai oublié que je l'avais faite...
 	if (depart == -1){
 		for(int i = 0;i<5;++i){
@@ -151,4 +151,4 @@ int transition(int depart, char symbole){ //devait etre utilisé dans le while e
 		perror("Transition depart error");
 		return -1;
 	}
-}
+}*/

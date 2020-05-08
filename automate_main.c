@@ -9,7 +9,7 @@ int listeTransitions[5][5][5];
 int main(int argc, char *argv[]){		
 	gets(argv[1]);
 	extern char str[160][160];
-	int *tab =  traduction(str[0]);
+	//int *tab =  traduction(str[0]);
 	
 	Automate automate;
 	automate.initial = (int)str[1][0] - '0'; 
@@ -110,7 +110,7 @@ for (int j = 0; j < 5; ++j)
 	
 	return 0;
 }
-
+/*
 int *traduction(char str[160]){
 	int i=0;
 	static int traduits[160];
@@ -120,7 +120,7 @@ int *traduction(char str[160]){
 	}
 	return traduits;
 }
-
+*/
 int transition(int depart, char symbole){ //devait etre utilisé dans le while en haut, mais j'ai oublié que je l'avais faite...
 	if (depart == -1){
 		for(int i = 0;i<5;++i){

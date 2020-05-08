@@ -29,7 +29,6 @@ int gets(char fileName[257]){ //taille max des noms de fichiers sous unix
 
      }else if(nbLigne == 2){
      	int etatInitial =  (int)*str[1] - '0';
-     	//printf("%lu\n");
      	if(estChiffre(str[1]) == 0 && etatInitial>=0 && etatInitial<=4 && str[1][1]=='\n'){
      		puts(str[1]);
      	}else{

@@ -12,16 +12,21 @@ int main(int argc, char *argv[]){
 	int *tab =  traduction(str[0]);
 	
 	Automate automate;
-	automate.initial = (int)str[1][0] - '0';
+	automate.initial = (int)str[1][0] - '0'; 
+	int j=0;
+	while(str[2][j] != '\0'){
+		automate.sorties[j]=str[2][j];
+		j++;
+	}
 
 
 	printf("-------------------------------------------------\n");
-	//printf("%s\n",str[4] );
 
 	Etat listeEtats[5];
 	int j = 0;
 	int nbCharacteres = 0;
 	int nbVirgule = 0;
+
 	for (int i = 3; i < 8; i++){
 		j = 0;
 		nbVirgule=0;

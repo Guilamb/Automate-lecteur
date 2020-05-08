@@ -2,7 +2,7 @@
 #include <ctype.h>
 int gets();
 int estLettre(char str[60],char exception);
-int estChiffre(char str[60]);
+int estChiffre(char astr[60],char exception);
 char str[160][160];//faudra changer le 60
 int gets(char fileName[257]){ //taille max des noms de fichiers sous unix
 	 
@@ -29,7 +29,7 @@ int gets(char fileName[257]){ //taille max des noms de fichiers sous unix
 
      }else if(nbLigne == 2){
      	int etatInitial =  (int)*str[1] - '0';
-     	if(estChiffre(str[1]) == 0 && etatInitial>=0 && etatInitial<=4 && str[1][1]=='\n'){
+     	if(estChiffre(str[1],'0') == 0 && etatInitial>=0 && etatInitial<=4 && str[1][1]=='\n'){
      		puts(str[1]);
      	}else{
      		perror("start state error");
@@ -39,7 +39,7 @@ int gets(char fileName[257]){ //taille max des noms de fichiers sous unix
 
      }else if(nbLigne == 3){
      	int etatInitial =  (int)*str[2] - '0';
-     	if(estChiffre(str[2]) == 0 && etatInitial>=0 && etatInitial<=4){
+     	if(estChiffre(str[2],32 == 0 && etatInitial>=0 && etatInitial<=4){
      		puts(str[2]);
      	}else{
      		perror("Accepted state error");
@@ -75,10 +75,10 @@ int estLettre(char astr[60],char exception){
 	return 0;
 }
 
-int estChiffre(char astr[60]){
+int estChiffre(char astr[60],char exception){
 	int j = 0;
 	while(astr[j] != '\n'){
-		if (isdigit(astr[j])==0)
+		if (isdigit(astr[j])==0 && astr[j] != exception)
 		{	
 			perror("error not a number");
 			return -1;

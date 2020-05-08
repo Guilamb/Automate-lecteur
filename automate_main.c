@@ -21,6 +21,7 @@ int main(int argc, char *argv[]){
 	printf("%c",*automate.acceptant);
 
 
+
 	printf("-------------------------------------------------\n");
 
 	Etat listeEtats[5];

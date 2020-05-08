@@ -6,8 +6,8 @@ int *traduction(char str[160]);
 int transition(int depart, char symbole);//revoir le modèle des transitions car je m'en sert pas... 
 int listeTransitions[5][5][5];
 
-int main(int argc, char *argv[]){		//Il faut pas oublier de prendre en compte le premier input qui est le nom du fichier, pour le moment on lit que file.txt
-	gets();
+int main(int argc, char *argv[]){		
+	gets(argv[1]);
 	extern char str[160][160];
 	int *tab =  traduction(str[0]);
 	
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){		//Il faut pas oublier de prendre en compte le
 					idxInput++;
 					
 					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
-					//break; il etait la pour qq chose mais je sais plus pq et si on le met ça marche plus donc 
+					//break; il etait la pour qq chose mais je sais plus pq et si on le met ça marche plus donc ¯\_(ツ)_/¯
 
 				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 'c'){ 
 					printf("%d mot non reconnu par l'automate 1\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
@@ -99,11 +99,11 @@ for (int j = 0; j < 5; ++j)
 	{
 		printf("%d %c\n",j, listeTransitions[0][j][k] );
 	}
-}
+}*/
 	
 	return 0;
 }
-*/
+
 int *traduction(char str[160]){
 	int i=0;
 	static int traduits[160];

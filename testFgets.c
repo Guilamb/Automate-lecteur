@@ -4,12 +4,12 @@ int gets();
 int estLettre(char str[60],char exception);
 int estChiffre(char str[60]);
 char str[160][160];//faudra changer le 60
-int gets(){
+int gets(char fileName[257]){ //taille max des noms de fichiers sous unix
 	 
 	FILE *fp;
 	int nbLigne = 0;
 
-	fp = fopen("file.txt" , "r");
+	fp = fopen(fileName , "r");
 
 	/* Verrification de l'ouverture*/
 	if (fp == NULL){

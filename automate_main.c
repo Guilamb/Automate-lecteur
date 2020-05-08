@@ -113,7 +113,7 @@ for (int j = 0; j < 5; ++j)
 	
 	return 0;
 }
-/*
+
 int *traduction(char str[160]){
 	int i=0;
 	static int traduits[160];
@@ -151,4 +151,4 @@ int transition(int depart, char symbole){ //devait etre utilisé dans le while e
 		perror("Transition depart error");
 		return -1;
 	}
-}*/
+}

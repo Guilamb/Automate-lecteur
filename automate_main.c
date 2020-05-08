@@ -15,10 +15,10 @@ int main(int argc, char *argv[]){
 	automate.initial = (int)str[1][0] - '0'; 
 	int idxTempon=0;
 	while(str[2][idxTempon] != '\0'){
-		automate.acceptant[j]=str[2][j];
+		automate.acceptant[idxTempon]=str[2][idxTempon];
 		idxTempon++;
 	}
-	printf("%s",automate.acceptant);
+	printf("%d",*automate.acceptant);
 
 
 	printf("-------------------------------------------------\n");

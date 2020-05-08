@@ -39,7 +39,7 @@ int gets(char fileName[257]){ //taille max des noms de fichiers sous unix
 
      }else if(nbLigne == 3){
      	int etatInitial =  (int)*str[2] - '0';
-     	if(estChiffre(str[2],32 == 0 && etatInitial>=0 && etatInitial<=4){
+     	if(estChiffre(str[2],32) == 0 && etatInitial>=0 && etatInitial<=4){
      		puts(str[2]);
      	}else{
      		perror("Accepted state error");

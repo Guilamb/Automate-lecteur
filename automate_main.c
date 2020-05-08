@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
 		automate.acceptant[idxTempon]=str[2][idxTempon];
 		idxTempon++;
 	}
-	printf("%d",*automate.acceptant);
+	printf("%c",*automate.acceptant);
 
 
 	printf("-------------------------------------------------\n");

@@ -12,7 +12,7 @@ int main(int argc, char *trucmuch[]){
 	argv[2]= "ab";		
 	gets(argv[1]);
 	extern char str[160][160];
-	//int *tab =  traduction(str[0]);
+	int *tab =  traduction(str[0]);
 	
 	Automate automate;
 	automate.initial = (int)str[1][0] - '0'; 
@@ -35,11 +35,13 @@ int main(int argc, char *trucmuch[]){
 	for (int i = 3; i < 8; i++){
 		j = 0;
 		nbVirgule=0;
+		listeEtats[i-3].numero = i-3;
 		while(str[i][j] != '\0'){
 			if (str[i][j] != ';' && str[i][j] != '\n')// le 10 c'est pour des lineFeed qui sont en trop
 			{
 				//listeEtats[i].sorties[j] = (int)str[i][j] - 'a';
 				listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
+				
 				nbCharacteres = nbCharacteres+1;
 				
 			}

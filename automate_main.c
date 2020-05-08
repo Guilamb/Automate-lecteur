@@ -2,21 +2,24 @@
 #include "testFgets.c"
 #include "automate.c"
 
-//int *traduction(char str[160]);
+int *traduction(char str[160]);
 int transition(int depart, char symbole);//revoir le modèle des transitions car je m'en sert pas... 
+int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[]);
+void testPrintListes();
 int listeTransitions[5][5][5];
+Etat listeEtats[5];
 
-int main(int argc, char *trucmuch[]){
-	char *argv[3];
-	argv[1]= "file.txt";
-	argv[2]= "ab";		
+int main(int argc, char *argv[]){
+	printf("%c\n",26 );
 	gets(argv[1]);
 	extern char str[160][160];
 	int *tab =  traduction(str[0]);
 	
 	Automate automate;
 	automate.initial = (int)str[1][0] - '0'; 
+	
 	int idxTempon=0;
+
 	while(str[2][idxTempon] != '\0'){
 		automate.acceptant[idxTempon]=str[2][idxTempon];
 		idxTempon++;
@@ -27,7 +30,7 @@ int main(int argc, char *trucmuch[]){
 
 	printf("-------------------------------------------------\n");
 
-	Etat listeEtats[5];
+	//creation de la matrice de proximite
 	int j = 0;
 	int nbCharacteres = 0;
 	int nbVirgule = 0;
@@ -35,84 +38,35 @@ int main(int argc, char *trucmuch[]){
 	for (int i = 3; i < 8; i++){
 		j = 0;
 		nbVirgule=0;
-		listeEtats[i-3].numero = i-3;
+		listeEtats[i-3].numeros = i-3;
+		
 		while(str[i][j] != '\0'){
 			if (str[i][j] != ';' && str[i][j] != '\n')// le 10 c'est pour des lineFeed qui sont en trop
 			{
 				//listeEtats[i].sorties[j] = (int)str[i][j] - 'a';
 				listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
+				listeEtats[i-3].trans[nbVirgule][nbCharacteres] = listeTransitions[i-3][nbVirgule][nbCharacteres];
 				
 				nbCharacteres = nbCharacteres+1;
-				
+
 			}
 			if(str[i][j] == ';'){
 				nbVirgule++;
 				nbCharacteres = 0;
 			}
-			j++;//creation de la matrice de proximite
+			j++;	
 		listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
 
 	}
-	listeTransitions[i-3][nbVirgule][6] = 'c'; // charctère de fin rajouté à la main, il faudra le changer car sinon le c sera pas possible
+	listeTransitions[i-3][nbVirgule][6] = 26; // on peut se permettre de designer le substitute comme un charactère de fin car il n'est pas accepté lors du parcours de la description d'automate
 
 }
-
-	//parcours de la matrice de proximite
-	int idxLigne = automate.initial;
-	int idxInput = 0;
-	int idxElement = 0;
-	int idxColonne = 0;
-
-	while(idxLigne < 5){
-		idxColonne = 0;
-
-		while(idxColonne < 5){
-			idxElement = 0;
-
-			while(listeTransitions[idxLigne][idxColonne][idxElement] != ';' || listeTransitions[idxLigne][idxColonne][idxElement] != '\0'){
-				
-				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
-					printf("%d\n",idxInput );
-					if (argv[2][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
-						
-						//verifier que l'on est dans un etat acceptant
-						printf("Mot reconnu par l'automate\n");
-						return 0;
-					}
-
-					idxInput++;
-					
-					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
-					//break; il etait la pour qq chose mais je sais plus pq et si on le met ça marche plus donc ¯\_(ツ)_/¯
-
-				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 'c'){ 
-					printf("%d mot non reconnu par l'automate 1\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
-					return 0;
-				}
-				else{
-					idxElement++;
-				}
-
-			}
-			printf("mot non reconnu par l'automate 2\n");
-			return 0;
-		}	
-	}
-	printf("mot non reconnu par l'automate 3\n");
-
+parcoursAutomate(automate.initial, listeTransitions, argv);
 
 printf("-------------------------------------------------\n");
-//printf("%d nb\n", listeTransitions[1][4][6] );
 
-/*
-for (int j = 0; j < 5; ++j)
-{
-	for (int k = 0; k < 5; ++k)
-	{
-		printf("%d %c\n",j, listeTransitions[0][j][k] );
-	}
-}*/
-	
+//testPrintListes();
+
 	return 0;
 }
 
@@ -153,4 +107,62 @@ int transition(int depart, char symbole){ //devait etre utilisé dans le while e
 		perror("Transition depart error");
 		return -1;
 	}
+}
+
+int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[]){
+
+	//parcours de la matrice de proximite
+	int idxLigne = etatInitial;
+	int idxInput = 0;
+	int idxElement = 0;
+	int idxColonne = 0;
+
+	while(idxLigne < 5){
+		idxColonne = 0;
+
+		while(idxColonne < 5){
+			idxElement = 0;
+
+			while(listeTransitions[idxLigne][idxColonne][idxElement] != ';' || listeTransitions[idxLigne][idxColonne][idxElement] != '\0'){
+				
+				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
+
+					if (argv[2][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
+						
+						//verifier que l'on est dans un etat acceptant
+						printf("Mot reconnu par l'automate\n");
+						return 0;
+					}
+
+					idxInput++;
+					
+					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
+					//break; il etait la pour qq chose mais je sais plus pq et si on le met ça marche plus donc ¯\_(ツ)_/¯
+
+				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 26){ 
+					printf("%d mot non reconnu par l'automate 1\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
+					return 0;
+				}
+				else{
+					idxElement++;
+				}
+
+			}
+			printf("mot non reconnu par l'automate 2\n");
+			return 0;
+		}	
+	}
+	printf("mot non reconnu par l'automate 3\n");
+}
+
+void testPrintListes(){
+	//printf("%d nb\n", listeTransitions[1][4][6]);
+	for (int j = 0; j < 5; ++j)
+	{
+		for (int k = 0; k < 5; ++k)
+		{
+			printf("%d %c\n",j, listeEtats[0].trans[j][k] );
+		}
+	}
+	
 }

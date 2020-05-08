@@ -2,7 +2,7 @@
 #include "testFgets.c"
 #include "automate.c"
 
-int *traduction(char str[160]);
+//int *traduction(char str[160]);
 int transition(int depart, char symbole);//revoir le modèle des transitions car je m'en sert pas... 
 int listeTransitions[5][5][5];
 

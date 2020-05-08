@@ -3,13 +3,12 @@
 #include "automate.c"
 
 int *traduction(char str[160]);
-int transition(int depart, char symbole);//revoir le modèle des transitions 
+int transition(int depart, char symbole);//revoir le modèle des transitions car je m'en sert pas... 
 int listeTransitions[5][5][5];
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]){		//Il faut pas oublier de prendre en compte le premier input qui est le nom du fichier, pour le moment on lit que file.txt
 	gets();
 	extern char str[160][160];
-	//printf("%s",argv[1] );
 	int *tab =  traduction(str[0]);
 	
 	Automate automate;
@@ -42,7 +41,7 @@ int main(int argc, char *argv[]){
 		listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
 
 	}
-	listeTransitions[i-3][nbVirgule][6] = 'c';
+	listeTransitions[i-3][nbVirgule][6] = 'c'; // charctère de fin rajouté à la main, il faudra le changer car sinon le c sera pas possible
 
 }
 
@@ -51,16 +50,15 @@ int main(int argc, char *argv[]){
 	int idxInput = 0;
 	int idxElement = 0;
 	int idxColonne = 0;
-	//printf("%d\n",argv[2][2] );
 
-	while(idxLigne < 5){//comment on s'arrete ?
+	while(idxLigne < 5){
 		idxColonne = 0;
 
 		while(idxColonne < 5){
 			idxElement = 0;
 
 			while(listeTransitions[idxLigne][idxColonne][idxElement] != ';' || listeTransitions[idxLigne][idxColonne][idxElement] != '\0'){
-				//printf("%c\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
+				
 				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
 					printf("%d\n",idxInput );
 					if (argv[2][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
@@ -73,9 +71,9 @@ int main(int argc, char *argv[]){
 					idxInput++;
 					
 					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
-					//break;
+					//break; il etait la pour qq chose mais je sais plus pq et si on le met ça marche plus donc 
 
-				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 'c'){ //il faut trouver le dernier charcatère de la liste
+				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 'c'){ 
 					printf("%d mot non reconnu par l'automate 1\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
 					return 0;
 				}
@@ -94,6 +92,7 @@ int main(int argc, char *argv[]){
 printf("-------------------------------------------------\n");
 //printf("%d nb\n", listeTransitions[1][4][6] );
 
+/*
 for (int j = 0; j < 5; ++j)
 {
 	for (int k = 0; k < 5; ++k)
@@ -104,7 +103,7 @@ for (int j = 0; j < 5; ++j)
 	
 	return 0;
 }
-
+*/
 int *traduction(char str[160]){
 	int i=0;
 	static int traduits[160];
@@ -115,7 +114,7 @@ int *traduction(char str[160]){
 	return traduits;
 }
 
-int transition(int depart, char symbole){
+int transition(int depart, char symbole){ //devait etre utilisé dans le while en haut, mais j'ai oublié que je l'avais faite...
 	if (depart == -1){
 		for(int i = 0;i<5;++i){
 		for (int j = 0; j < 5; ++j){

@@ -7,7 +7,7 @@ int transition(int depart, char symbole);//revoir le modèle des transitions car
 int listeTransitions[5][5][5];
 
 int main(int argc, char *argv[]){		
-	gets(argv[1]);
+	gets("file.txt");
 	extern char str[160][160];
 	//int *tab =  traduction(str[0]);
 	
@@ -66,9 +66,9 @@ int main(int argc, char *argv[]){
 
 			while(listeTransitions[idxLigne][idxColonne][idxElement] != ';' || listeTransitions[idxLigne][idxColonne][idxElement] != '\0'){
 				
-				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
+				if(argv[1][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
 					printf("%d\n",idxInput );
-					if (argv[2][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
+					if (argv[1][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
 						
 						//verifier que l'on est dans un etat acceptant
 						printf("Mot reconnu par l'automate\n");

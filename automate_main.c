@@ -13,11 +13,12 @@ int main(int argc, char *argv[]){
 	
 	Automate automate;
 	automate.initial = (int)str[1][0] - '0'; 
-	int j=0;
-	while(str[2][j] != '\0'){
-		automate.sorties[j]=str[2][j];
-		j++;
+	int idxTempon=0;
+	while(str[2][idxTempon] != '\0'){
+		automate.acceptant[j]=str[2][j];
+		idxTempon++;
 	}
+	printf("%s",automate.acceptant);
 
 
 	printf("-------------------------------------------------\n");
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]){
 		while(str[i][j] != '\0'){
 			if (str[i][j] != ';' && str[i][j] != '\n')// le 10 c'est pour des lineFeed qui sont en trop
 			{
-				listeEtats[i].sorties[j] = (int)str[i][j] - 'a';
+				//listeEtats[i].sorties[j] = (int)str[i][j] - 'a';
 				listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
 				nbCharacteres = nbCharacteres+1;
 				

@@ -5,17 +5,18 @@
 int *traduction(char str[160]);
 int transition(int depart, char symbole);//revoir le modèle des transitions car je m'en sert pas... 
 int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[]);
+int isAcceptant(int numerosEtat);
 void testPrintListes();
 int listeTransitions[5][5][5];
 Etat listeEtats[5];
+Automate automate;
 
 int main(int argc, char *argv[]){
-	printf("%c\n",26 );
+
 	gets(argv[1]);
 	extern char str[160][160];
 	int *tab =  traduction(str[0]);
 	
-	Automate automate;
 	automate.initial = (int)str[1][0] - '0'; 
 	
 	int idxTempon=0;
@@ -61,11 +62,11 @@ int main(int argc, char *argv[]){
 	listeTransitions[i-3][nbVirgule][6] = 26; // on peut se permettre de designer le substitute comme un charactère de fin car il n'est pas accepté lors du parcours de la description d'automate
 
 }
-parcoursAutomate(automate.initial, listeTransitions, argv);
+//parcoursAutomate(automate.initial, listeTransitions, argv);
 
 printf("-------------------------------------------------\n");
 
-//testPrintListes();
+testPrintListes();
 
 	return 0;
 }
@@ -127,7 +128,7 @@ int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[
 				
 				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
 
-					if (argv[2][idxInput+1] == 0){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
+					if (argv[2][idxInput+1] == 0 && isAcceptant(idxLigne)){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
 						
 						//verifier que l'on est dans un etat acceptant
 						printf("Mot reconnu par l'automate\n");
@@ -155,14 +156,29 @@ int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[
 	printf("mot non reconnu par l'automate 3\n");
 }
 
+int isAcceptant(int numerosEtat){
+	int idxEtat = 0;
+	while(automate.acceptant[idxEtat] != 0){
+		printf("acceptantt : %c \n",automate.acceptant[idxEtat]);
+		if(automate.acceptant[idxEtat] == numerosEtat){
+			
+			return 0;
+		}
+		idxEtat++;
+	}
+	printf("acceptant ok \n");
+	return -1;
+}
+
 void testPrintListes(){
-	//printf("%d nb\n", listeTransitions[1][4][6]);
+	printf("%c nb\n", automate.acceptant[6]);
+	/*
 	for (int j = 0; j < 5; ++j)
 	{
 		for (int k = 0; k < 5; ++k)
 		{
 			printf("%d %c\n",j, listeEtats[0].trans[j][k] );
 		}
-	}
+	}*/
 	
 }

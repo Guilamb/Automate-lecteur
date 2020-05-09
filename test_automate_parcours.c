@@ -44,22 +44,20 @@ int main(int argc, char *argv[]){
 		while(str[i][j] != '\0'){
 			if (str[i][j] != ';' && str[i][j] != '\n')// le 10 c'est pour des lineFeed qui sont en trop
 			{
-				//listeEtats[i].sorties[j] = (int)str[i][j] - 'a';
-				listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
-				listeEtats[i-3].trans[nbVirgule][nbCharacteres] = listeTransitions[i-3][nbVirgule][nbCharacteres];
-				
+
+				listeEtats[i-3].trans[nbVirgule][nbCharacteres] = str[i][j];
 				nbCharacteres = nbCharacteres+1;
 
 			}
-			if(str[i][j] == ';'){
+			else if(str[i][j] == ';'){
 				nbVirgule++;
 				nbCharacteres = 0;
 			}
 			j++;	
-		listeTransitions[i-3][nbVirgule][nbCharacteres] = str[i][j];
+		listeEtats[i-3].trans[nbVirgule][nbCharacteres] = str[i][j];
 
 	}
-	listeTransitions[i-3][nbVirgule][6] = 26; // on peut se permettre de designer le substitute comme un charactère de fin car il n'est pas accepté lors du parcours de la description d'automate
+	listeEtats[i-3].trans[nbVirgule][6] = 26; // on peut se permettre de designer le substitute comme un charactère de fin car il n'est pas accepté lors du parcours de la description d'automate
 
 }
 parcoursAutomate(automate.initial, listeTransitions, argv);
@@ -117,45 +115,35 @@ int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[
 	int idxInput = 0;
 	int idxElement = 0;
 	int idxColonne = 0;
+	int ligneCourante;
+	char lettreCourante;
 
-	while(idxLigne < 5){
+	while(argv[2][idxInput] != 0){
+		lettreCourante = argv[2][idxInput];
+		
+		ligneCourante= idxLigne;
 		idxColonne = 0;
+		while(idxColonne < 6 ||	idxLigne == ligneCourante){
+			idxElement=0;
 
-		while(idxColonne < 5){
-			idxElement = 0;
-			
-			while(listeTransitions[idxLigne][idxColonne][idxElement] != ';' || listeTransitions[idxLigne][idxColonne][idxElement] != '\0'){
-				printf("liste : %d %d %d %c!\n",idxLigne, idxColonne,idxElement, listeTransitions[idxLigne][idxColonne][idxElement]);
-				if(argv[2][idxInput] == listeTransitions[idxLigne][idxColonne][idxElement]){
-
-					
-
-					if (argv[2][idxInput+1] == 0 && isAcceptant(idxLigne)){ // si le prochain element est le symbole de fin alors le mot a été lu entièrement.
-						
-						//verifier que l'on est dans un etat acceptant
-						printf("Mot reconnu par l'automate\n");
-						return 0;
-					}
-
+			while(listeEtats[idxLigne].trans[idxColonne][idxElement] != '\0' || listeEtats[idxLigne].trans[idxColonne][idxElement] != 26 || idxElement<5){
+				printf("il fait ça: %c ligne : %d colonne: %d element: %d\n",listeEtats[idxLigne].trans[idxColonne][idxElement], idxLigne, idxColonne, idxElement);
+				
+				if(listeEtats[idxLigne].trans[idxColonne][idxElement] == lettreCourante){
 					idxInput++;
-					
-					idxLigne = idxColonne; //si la lettre est presente alors on va a l'etat correspondant soit idxColonne ici
-					//break; il etait la pour qq chose mais je sais plus pq et si on le met ça marche plus donc ¯\_(ツ)_/¯
-
-				}else if(listeTransitions[idxLigne][idxColonne][idxElement+1] == 26){ 
-					printf("%d mot non reconnu par l'automate 1\n",listeTransitions[idxLigne][idxColonne][idxElement+1]);
-					return 0;
-				}
-				else{
-					idxElement++;
+					idxLigne = idxColonne;
+					break;
 				}
 
+				idxElement++;
 			}
-			printf("mot non reconnu par l'automate 2\n");
-			return 0;
-		}	
+			idxColonne++;
+		}
+
+
 	}
-	printf("mot non reconnu par l'automate 3\n");
+
+	
 }
 
 int isAcceptant(int numerosEtat){

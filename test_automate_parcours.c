@@ -3,11 +3,9 @@
 #include "automate.c"
 
 int *traduction(char str[160]);
-int transition(int depart, char symbole);//revoir le modèle des transitions car je m'en sert pas... 
-int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[]);
+int parcoursAutomate(int etatInitial, Etat listeEtats[5], char *argv[]);
 int isAcceptant(int numerosEtat);
 void testPrintListes();
-int listeTransitions[5][5][5];
 Etat listeEtats[5];
 Automate automate;
 
@@ -60,7 +58,7 @@ int main(int argc, char *argv[]){
 	listeEtats[i-3].trans[nbVirgule][6] = 26; // on peut se permettre de designer le substitute comme un charactère de fin car il n'est pas accepté lors du parcours de la description d'automate
 
 }
-parcoursAutomate(automate.initial, listeTransitions, argv);
+parcoursAutomate(automate.initial, listeEtats, argv);
 
 printf("-------------------------------------------------\n");
 
@@ -79,67 +77,45 @@ int *traduction(char str[160]){
 	return traduits;
 }
 
-int transition(int depart, char symbole){ //devait etre utilisé dans le while en haut, mais j'ai oublié que je l'avais faite...
-	if (depart == -1){
-		for(int i = 0;i<5;++i){
-		for (int j = 0; j < 5; ++j){
-			for (int k = 0; k < 5; ++k){
-				if (listeTransitions[i][j][k] == symbole){
-					return 0;
-				}
-			}
-		}
-	}
-		return -1;
 
-
-	}else if(depart>=0 && depart<=4){
-		for (int i = 0; i < 5; ++i){
-			for (int k = 0; k < 5; ++k){
-
-			if (listeTransitions[depart][i][k] == symbole){
-				return 0;
-			}}}
-			return -1;
-
-	}else{
-		perror("Transition depart error");
-		return -1;
-	}
-}
-
-int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[]){
+int parcoursAutomate(int etatInitial, Etat listeEtats[5], char *argv[]){
 
 	//parcours de la matrice de proximite
 	int idxLigne = etatInitial;
 	int idxInput = 0;
 	int idxElement = 0;
 	int idxColonne = 0;
-	int ligneCourante;
+	int lettreTrouve;
 	char lettreCourante;
 
 	while(argv[2][idxInput] != 0){
 		lettreCourante = argv[2][idxInput];
 		
-		ligneCourante= idxLigne;
+		lettreTrouve=0;
 		idxColonne = 0;
-		while(idxColonne < 6 ||	idxLigne == ligneCourante){
+		while(lettreTrouve==0){
 			idxElement=0;
-
-			while(listeEtats[idxLigne].trans[idxColonne][idxElement] != '\0' || listeEtats[idxLigne].trans[idxColonne][idxElement] != 26 || idxElement<5){
-				printf("il fait ça: %c ligne : %d colonne: %d element: %d\n",listeEtats[idxLigne].trans[idxColonne][idxElement], idxLigne, idxColonne, idxElement);
+			while(listeEtats[idxLigne].trans[idxColonne][idxElement] != '\0' && listeEtats[idxLigne].trans[idxColonne][idxElement] != ';'){
+				//printf("il fait ça: %c ligne : %d colonne: %d element: %d\n",listeEtats[idxLigne].trans[idxColonne][idxElement], idxLigne, idxColonne, idxElement);
 				
 				if(listeEtats[idxLigne].trans[idxColonne][idxElement] == lettreCourante){
 					idxInput++;
 					idxLigne = idxColonne;
+					lettreTrouve=1;
 					break;
 				}
-
 				idxElement++;
 			}
 			idxColonne++;
+			if(idxColonne==5){
+				printf("mot non reconnu par l'automate\n");					
+				return 0;
+			}
 		}
-
+	
+	}
+	if(isAcceptant(idxLigne)){
+		printf("mot reconu par l'automate\n");
 
 	}
 
@@ -153,12 +129,11 @@ int isAcceptant(int numerosEtat){
 		printf("acceptant : %c \n",automate.acceptant[idxEtat]);
 		if(automate.acceptant[idxEtat] == numerosEtat){
 			
-			return 0;
+			return 1;
 		}
 		idxEtat++;
 	}
-	printf("acceptant ok \n");
-	return -1;
+	return 0	;
 }
 
 void testPrintListes(){

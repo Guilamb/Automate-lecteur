@@ -158,8 +158,9 @@ int parcoursAutomate(int etatInitial, int listeTransitions[5][5][5], char *argv[
 
 int isAcceptant(int numerosEtat){
 	int idxEtat = 0;
+	printf("ok");
 	while(automate.acceptant[idxEtat] != 0){
-		printf("acceptantt : %c \n",automate.acceptant[idxEtat]);
+		printf("acceptant : %c \n",automate.acceptant[idxEtat]);
 		if(automate.acceptant[idxEtat] == numerosEtat){
 			
 			return 0;

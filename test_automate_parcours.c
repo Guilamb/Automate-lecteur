@@ -11,7 +11,9 @@ Automate automate;
 
 int main(int argc, char *argv[]){
 
-	gets(argv[1]);
+	if(!gets(argv[1])){
+		return 0;
+	}
 	extern char str[160][160];
 	int *tab =  traduction(str[0]);
 	
@@ -23,7 +25,7 @@ int main(int argc, char *argv[]){
 		automate.acceptant[idxTempon]=str[2][idxTempon];
 		idxTempon++;
 	}
-	printf("%c",*automate.acceptant);
+	printf("%c",automate.acceptant[0]);
 
 
 
@@ -117,6 +119,8 @@ int parcoursAutomate(int etatInitial, Etat listeEtats[5], char *argv[]){
 	if(isAcceptant(idxLigne)){
 		printf("mot reconu par l'automate\n");
 
+	}else{
+		printf("mot non reconnu par l'automate\n");	
 	}
 
 	
@@ -124,10 +128,10 @@ int parcoursAutomate(int etatInitial, Etat listeEtats[5], char *argv[]){
 
 int isAcceptant(int numerosEtat){
 	int idxEtat = 0;
-	printf("\n nb : %d",numerosEtat);
+	printf("\n nb : %d ",numerosEtat);
 	while(automate.acceptant[idxEtat] != 0){
 		printf("acceptant : %c \n",automate.acceptant[idxEtat]);
-		if(automate.acceptant[idxEtat] == numerosEtat){
+		if(automate.acceptant[idxEtat]-'0' == numerosEtat){
 			
 			return 1;
 		}
@@ -137,9 +141,9 @@ int isAcceptant(int numerosEtat){
 }
 
 void testPrintListes(){
-	printf("%c nb\n", automate.acceptant[6]);
-	/*
-	for (int j = 0; j < 5; ++j)
+	printf("%c nb\n", automate.acceptant[0]);
+	
+	/*for (int j = 0; j < 5; ++j)
 	{
 		for (int k = 0; k < 5; ++k)
 		{
